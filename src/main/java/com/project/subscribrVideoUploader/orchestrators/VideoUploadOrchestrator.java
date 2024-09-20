@@ -26,6 +26,8 @@ public class VideoUploadOrchestrator {
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(url, String.class);
+
+        System.out.println("COMPLETED: " + result);
     }
 
 
