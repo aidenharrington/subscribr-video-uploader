@@ -7,25 +7,27 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class VideoUploadOrchestrator {
-    private final String SUBSCRIBR_API_URL = "//localhost:8080/";
+    private final String SUBSCRIBR_API_URL = "http://localhost:8080/";
 
     // Subscribr URL: /{userId}/videos/{videoId}
-    private final String UPLOAD_VIDEO_URL = "/%s/videos/%s";
+    private final String UPLOAD_VIDEO_URL = "webhooks/%s/videos/%s";
+
+    private final int TIME_TO_SLEEP_IN_MS = 5000;
 
     // Simulate time to upload video and alert API via webhook when complete
     @Async
     public void uploadVideoMock(Video video) throws InterruptedException {
         // Mock upload video
-        Thread.sleep(15000);
+        Thread.sleep(TIME_TO_SLEEP_IN_MS);
         sendVideoUploadCompleteWebhook(video);
     }
 
     private void sendVideoUploadCompleteWebhook(Video video) {
-        String uploadVideoUrl = String.format(UPLOAD_VIDEO_URL, video.getUploaderUserId(), video.getId());
+        String uploadVideoUrl = String.format(UPLOAD_VIDEO_URL, video.getVideoUploaderId(), video.getId());
         String url = SUBSCRIBR_API_URL + uploadVideoUrl;
 
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(url, String.class);
+        String result = restTemplate.postForObject(url,video, String.class);
 
         System.out.println("COMPLETED: " + result);
     }
