@@ -17,19 +17,22 @@ public class VideoUploadOrchestrator {
     // Simulate time to upload video and alert API via webhook when complete
     @Async
     public void uploadVideoMock(Video video) throws InterruptedException {
+        System.out.println("Started uploading video: " + video.getName());
         // Mock upload video
         Thread.sleep(TIME_TO_SLEEP_IN_MS);
+        System.out.println("Completed uploading video: " + video.getName());
         sendVideoUploadCompleteWebhook(video);
     }
 
     private void sendVideoUploadCompleteWebhook(Video video) {
+        System.out.println("Sending video upload complete webhooks");
         String uploadVideoUrl = String.format(UPLOAD_VIDEO_URL, video.getVideoUploaderId(), video.getId());
         String url = SUBSCRIBR_API_URL + uploadVideoUrl;
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.postForObject(url,video, String.class);
 
-        System.out.println("COMPLETED: " + result);
+        System.out.println("Webhook arrived with result: " + result);
     }
 
 

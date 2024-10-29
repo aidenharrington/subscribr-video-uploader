@@ -19,22 +19,12 @@ public class VideoUploadController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadVideo(@RequestBody Video newVideo) {
         // Start async upload - this will generate webhook
-        System.out.println("Hit");
         try {
             videoUploadOrchestrator.uploadVideoMock(newVideo);
         } catch (InterruptedException e) {
             // Ignored exception since this is async endpoint & WH operation
             // This exception would be logged only
         }
-
-        return ResponseEntity.ok("Success");
-
-
-    }
-
-    @GetMapping("/upload")
-    public ResponseEntity<String> uploadVideo() {
-        System.out.println("hit");
 
         return ResponseEntity.ok("Success");
 
