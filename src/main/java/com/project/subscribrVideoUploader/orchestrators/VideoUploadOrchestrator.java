@@ -1,16 +1,18 @@
 package com.project.subscribrVideoUploader.orchestrators;
 
 import com.project.subscribrVideoUploader.models.Video;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class VideoUploadOrchestrator {
-    private final String SUBSCRIBR_API_URL = "http://localhost:8080/";
 
-    // Subscribr URL: /{userId}/videos/{videoId}
-    private final String UPLOAD_VIDEO_URL = "webhooks/%s/videos/%s";
+    @Value("${subscribrApi.url}")
+    private String SUBSCRIBR_API_URL;
+
+    private final String UPLOAD_VIDEO_URL = "/webhooks/%s/videos/%s";
 
     private final int TIME_TO_SLEEP_IN_MS = 5000;
 
